@@ -9,6 +9,5 @@ with open("acdc.json", "r") as file:
 for track in acdc_dict["album"]["tracks"]["track"]:
     album_duration += int(track["duration"])
 
-
-album_duration = str(datetime.timedelta(seconds = album_duration))
+album_duration = str(datetime.timedelta(seconds=album_duration))
 print(album_duration)
