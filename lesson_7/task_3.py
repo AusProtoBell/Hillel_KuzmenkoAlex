@@ -1,8 +1,10 @@
 import requests
 import datetime
 
+# ATTENTION! API_KEY was deleted. Alexander, input it while checking this work.
+API_KEY = "****************"
 
-API_KEY = "f9ada9efec6a3934dad5f30068fdcbb8"
+
 temp_day = []
 temp_night = []
 temp_feels_like = []
