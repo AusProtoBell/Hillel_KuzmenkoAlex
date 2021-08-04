@@ -11,13 +11,34 @@ def arg_parser():
     parser.add_argument('-f', '--fuel')
     parser.add_argument('-r', '--reg_num')
     arguments = parser.parse_args()
-    if arguments.brand is None \
-            and arguments.color is None \
-            and arguments.year is None \
-            and arguments.fuel is None:
+    return arguments
+
+
+def check_args(arguments):
+    result = {key: value for key, value in vars(arguments).items()
+              if key != 'o' and value is not None}
+    if not result:
         print("Incorrect arguments for search")
         exit()
-    return arguments
+    return result
+
+
+def map_elements():
+    return {'brand': 'BRAND',
+            'color': 'COLOR',
+            'year': 'MAKE_YEAR',
+            'fuel': 'FUEL',
+            'reg_num': 'N_REG_NEW'}
+
+
+def check_row(row):
+    result = []
+    for key, value in check_args(args).items():
+        if row[map_elements()[key]] == value:
+            result.append(True)
+        else:
+            result.append(False)
+    return all(result)
 
 
 def get_data_csv(arguments):
@@ -25,10 +46,7 @@ def get_data_csv(arguments):
         file_reader = csv.DictReader(r_file, delimiter=';')
         polished_data = []
         for row in file_reader:
-            if row['BRAND'] == arguments.brand \
-                    and row['COLOR'] == arguments.color \
-                    and row['MAKE_YEAR'] == arguments.year \
-                    and row['FUEL'] == arguments.fuel:
+            if check_row(row):
                 polished_data.append({'D_REG': row['D_REG'],
                                       'BRAND': row['BRAND'],
                                       'MODEL': row['MODEL'],
@@ -44,7 +62,6 @@ def get_filename(arguments) -> str:
 
 
 def write_to_csv(data, arguments):
-
     with open(get_filename(arguments), mode='w', encoding='utf-8') as w_file:
         names = ['D_REG', 'BRAND', 'MODEL', 'COLOR', 'MAKE_YEAR', 'FUEL', 'N_REG_NEW']
         file_writer = csv.DictWriter(w_file, delimiter=';', lineterminator='\r', fieldnames=names)
