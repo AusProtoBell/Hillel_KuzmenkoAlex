@@ -13,13 +13,14 @@ class BankID:
 
     def deposit(self, value):
         self.balance += 0.99 * value
-        self.activity_list.append([value, 'deposit', datetime.datetime.now().strftime('%Y-%m-%d %I:%M%p')])
+        self.activity_list.append([value * 0.99, 'deposit', datetime.datetime.now().strftime('%Y-%m-%d %I:%M%p')])
 
     def withdrawal_funds(self, value):
         if value * 1.01 > self.balance:
             raise Exception("Insufficient funds")
         self.balance -= 1.01 * value
-        self.activity_list.append([f'-{value}', 'withdrawal', datetime.datetime.now().strftime('%Y-%m-%d %I:%M%p')])
+        self.activity_list.append([f'-{value * 1.01}', 'withdrawal',
+                                   datetime.datetime.now().strftime('%Y-%m-%d %I:%M%p')])
 
     def balance_check(self):
         return self.balance
