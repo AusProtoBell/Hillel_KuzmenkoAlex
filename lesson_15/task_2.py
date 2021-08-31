@@ -8,8 +8,9 @@ def format_number(phone_number: str):
     return phone_number
 
 
-print(format_number('063-999-99-99'))
-print(format_number('063 999-99-99'))
-print(format_number('063-99999-99'))
-print(format_number('+3806399-999-99'))
-print(format_number('380639999999'))
+if __name__ == "__main__":
+    print(format_number('063-999-99-99'))
+    print(format_number('063 999-99-99'))
+    print(format_number('063-99999-99'))
+    print(format_number('+3806399-999-99'))
+    print(format_number('380639999999'))

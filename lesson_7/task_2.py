@@ -17,9 +17,10 @@ def temp_calc(degree: float, temp_type: str):
     return celsius, kelvin, fahrenheit
 
 
-user_degree = float(input("Сколько градусов? "))
-user_degree_type = input("С - Цельсий, K - Кельвин, F - Фаренгейт \nПо какой шкале? ").upper()
+if __name__ == "__main__":
+    user_degree = float(input("Сколько градусов? "))
+    user_degree_type = input("С - Цельсий, K - Кельвин, F - Фаренгейт \nПо какой шкале? ").upper()
 
-print("C = {0}° \nK = {1}° \nF = {2}°".format(temp_calc(user_degree, user_degree_type)[0],
-                                              temp_calc(user_degree, user_degree_type)[1],
-                                              temp_calc(user_degree, user_degree_type)[2]))
+    print("C = {0}° \nK = {1}° \nF = {2}°".format(temp_calc(user_degree, user_degree_type)[0],
+                                                  temp_calc(user_degree, user_degree_type)[1],
+                                                  temp_calc(user_degree, user_degree_type)[2]))
