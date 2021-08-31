@@ -27,30 +27,29 @@ class InquiryOfficeAirport:
             if line['iata_code'] == iata_code:
                 self.airports.append(line)
         if not self.airports:
-            pass
+            raise AirportNotFoundError(iata_code, 'Airport not found')
 
     def country_search(self, country=None):
         for line in self.csv_data:
             if line['iso_country'] == country.upper():
                 self.airports.append(line)
         if not self.airports:
-            pass
+            raise CountryNotFoundError(country, 'Country not found')
 
     def name_search(self, name=None):
         for line in self.csv_data:
             if name.lower() in line['name'].lower():
                 self.airports.append(line)
         if not self.airports:
-            pass
+            raise AirportNotFoundError(name, 'Airport not found')
 
     @staticmethod
     def check_params(*arguments):
-        if len([value for value in arguments if value is not None]) > 1:
-            print(1)
-            exit()
-        if not len([value for  value in arguments if value is not None]):
-            print(2)
-            exit()
+        qrgs_qty = len([value for value in arguments if value is not None])
+        if qrgs_qty > 1:
+            raise MultipleOptionsError(qrgs_qty, 'Обязателен и необходим лишь один параметр для поиска')
+        if not qrgs_qty:
+            raise NoOptionsError(qrgs_qty, 'Обязателен и необходим один параметр для поиска')
 
     def get_search_result(self):
         if self.iata_code:
@@ -66,13 +65,52 @@ class InquiryOfficeAirport:
     def iata_code_check(iata_code):
         match = re.fullmatch(r'[A-Z]{3}', iata_code)
         if not match:
-            raise IATACodeError
-
+            raise IATACodeError(iata_code, 'IATA код может быть только 3х буквенным в верхнем регистре')
 
 
 class IATACodeError(Exception):
-    def __init__(self):
+    def __init__(self, data, message):
+        self.message = message
+        self.data = data
 
+    def __str__(self):
+        return f'("{self.message}", "{self.data}")'
+
+
+class AirportNotFoundError(Exception):
+    def __init__(self, data, message):
+        self.message = message
+        self.data = data
+
+    def __str__(self):
+        return f'{self.data} - {self.message}'
+
+
+class CountryNotFoundError(Exception):
+    def __init__(self, data, message):
+        self.message = message
+        self.data = data
+
+    def __str__(self):
+        return f'{self.data} - {self.message}'
+
+
+class MultipleOptionsError(Exception):
+    def __init__(self, data, message):
+        self.message = message
+        self.data = data
+
+    def __str__(self):
+        return f'("{self.message}", "{self.data}")'
+
+
+class NoOptionsError(Exception):
+    def __init__(self, data, message):
+        self.message = message
+        self.data = data
+
+    def __str__(self):
+        return f'("{self.message}", "{self.data}")'
 
 
 @click.command()
